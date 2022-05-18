@@ -1,21 +1,15 @@
-onnx : 
-	python test.py \
-			--dataroot datasets/toonify/ \
-			--name toonify-512 \
-			--loadSize 512 \
-			--checkpoints_dir /home/justin/gdrive/gan/results/pix2pixhd/toonify/checkpoints/ \
-			--label_nc 0 \
-			--no_instance \
-			--which_epoch latest \
-			--export_onnx model.onnx
+.PHONY: test
 
-validation:
-	python test.py \
-			--dataroot datasets/toonify/ \
-			--name toonify-512 \
-			--loadSize 512 \
-			--checkpoints_dir checkpoints/ \
-			--label_nc 0 \
-			--no_instance \
-			--which_epoch 80 \
-			--results_dir results/validation
+NAME = test
+
+test:
+	python test.py --name ${NAME}  --gpu_ids 0 --dataroot ./datasets/${NAME}/ --label_nc 0 --loadSize 1024 --no_instance --resize_or_crop none
+	
+train:
+	python train.py --name ${NAME}  --gpu_ids 0 --dataroot ./datasets/${NAME}/ --label_nc 0 --loadSize 1024 --data_type 8 --no_instance --resize_or_crop none
+
+export:
+	python test.py --name ${NAME} --dataroot ./datasets/${NAME}/ --label_nc 0 --loadSize 1920 --which_epoch latest --no_instance --export_onnx ${NAME}.onnx
+	
+export-onnx:
+	python export_onnx.py --name ${NAME} --gpu_ids 0 --dataroot ./datasets/${NAME}/ --label_nc 0 --loadSize 1024 --no_instance --resize_or_crop none --export_onnx ${NAME}.onnx --norm batch
