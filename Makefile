@@ -12,4 +12,4 @@ export:
 	python test.py --name ${NAME} --dataroot ./datasets/${NAME}/ --label_nc 0 --loadSize 1920 --which_epoch latest --no_instance --export_onnx ${NAME}.onnx
 	
 export-onnx:
-	python export_onnx.py --name ${NAME} --gpu_ids 0 --dataroot ./datasets/${NAME}/ --label_nc 0 --loadSize 1024 --no_instance --resize_or_crop none --export_onnx ${NAME}.onnx --norm batch
+	python export_onnx.py --name ${NAME} --dataroot ./datasets/${NAME}/ --label_nc 0 --loadSize 1920 --which_epoch latest --no_instance --export_onnx ${NAME}.onnx
